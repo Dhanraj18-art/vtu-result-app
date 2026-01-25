@@ -17,8 +17,7 @@ function openResult() {
         url += `/resultpage.php?USN=${usn}`;
     }
 
-
-    window.open(url, "_blank");
+window.open("https://results.vtu.ac.in", "_blank");
 } let sgpas = JSON.parse(localStorage.getItem("sgpas")) || [];
 
 
@@ -57,4 +56,5 @@ function saveSGPA() {
 
 
     document.getElementById("cgpa").innerText = `CGPA: ${cgpa}`;
+
 }
