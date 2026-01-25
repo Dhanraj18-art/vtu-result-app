@@ -1,48 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VTU Results App</title>
-<link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.json">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VTU Results App</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
 </head>
 <body>
-<div class="container">
-<h1>VTU Results</h1>
 
+  <div class="container">
+    <h1>VTU Results</h1>
 
-<input type="text" id="usn" placeholder="Enter USN">
+    <input
+      type="text"
+      id="usn"
+      placeholder="Enter USN (e.g. 1BH23EC001)"
+    />
 
+    <select id="semester">
+      <option value="">Select Semester</option>
+      <option value="1">Semester 1</option>
+      <option value="2">Semester 2</option>
+      <option value="3">Semester 3</option>
+      <option value="4">Semester 4</option>
+    </select>
 
-<select id="sem">
-<option value="cbcs">Latest / CBCS</option>
-<option value="1">Semester 1</option>
-<option value="2">Semester 2</option>
-<option value="3">Semester 3</option>
-<option value="4">Semester 4</option>
-<option value="5">Semester 5</option>
-<option value="6">Semester 6</option>
-<option value="7">Semester 7</option>
-<option value="8">Semester 8</option>
-</select>
+    <button onclick="openResult()">View Result</button>
+    <button class="secondary" onclick="copyUSN()">Copy USN</button>
 
+    <h2>SGPA / CGPA Calculator</h2>
 
-<button onclick="openResult()">View Result</button>
+    <input type="number" id="sgpa" step="0.01" placeholder="Enter SGPA" />
+    <button onclick="saveSGPA()">Save SGPA</button>
 
+    <p id="cgpa">CGPA: --</p>
+  </div>
 
-<h2>SGPA / CGPA Calculator</h2>
-<input type="number" id="sgpa" placeholder="Enter SGPA">
-<button onclick="saveSGPA()">Save</button>
-<p id="cgpa">CGPA: --</p>
-</div>
+  <script src="app.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
+  </script>
 
-
-<script src="app.js"></script>
-<script>
-if ('serviceWorker' in navigator) {
-navigator.serviceWorker.register('service-worker.js');
-}
-</script>
 </body>
 </html>
