@@ -4,6 +4,7 @@ const semesterUrls = {
   "2": "https://results.vtu.ac.in/JJEcbcs24/index.php",
   "3": "https://results.vtu.ac.in/DJcbcs25/index.php",
   "4": "https://results.vtu.ac.in/JJEcbcs25/index.php"
+  "5":    "https://results.vtu.ac.in/D25J26Ecbcs/index.php"
 };
 
 // Load saved USN on start
