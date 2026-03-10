@@ -83,119 +83,63 @@ function openResult() {
 
     window.open(url, "_blank");
 }
+function addSubject() {
 
-/***********************
- * ECE 2022 SCHEME SYLLABUS
- ***********************/
-const syllabus = {
+  const box = document.getElementById("subjectList");
 
-    1: [
-        ["Mathematics-I", 4],
-        ["Applied Physics", 4],
-        ["Basic Electronics", 3],
-        ["ESC-I", 3],
-        ["ETC-I / PLC-I", 3],
-        ["English", 1],
-        ["Kannada / Constitution", 1],
-        ["IDT / SFH", 1]
-    ],
+  const id = box.children.length;
 
-    2: [
-        ["Mathematics-II", 4],
-        ["Chemistry", 4],
-        ["Engineering Drawing", 3],
-        ["ESC-II", 3],
-        ["ETC-II / PLC-II", 3],
-        ["English", 1],
-        ["Kannada / Constitution", 1],
-        ["IDT / SFH", 1]
-    ],
+  box.innerHTML += `
+  <div class="subject">
+  Subject:
+  <input type="text" id="s${id}" placeholder="Subject Name">
 
-    3: [
-        ["Mathematics III", 3],
-        ["Digital Electronics", 3],
-        ["Network Analysis", 3],
-        ["Electronic Devices", 3],
-        ["Signals and Systems", 3],
-        ["Digital Electronics Lab", 1],
-        ["Electronic Devices Lab", 1],
-        ["Constitution of India", 1]
-    ],
+  Credit:
+  <input type="number" id="c${id}" placeholder="Credits">
 
-    4: [
-        ["Mathematics IV", 3],
-        ["Analog Circuits", 3],
-        ["Control Systems", 3],
-        ["Microcontrollers", 3],
-        ["Probability & Random Processes", 3],
-        ["Analog Circuits Lab", 1],
-        ["Microcontroller Lab", 1],
-        ["Universal Human Values", 1]
-    ],
+  Marks:
+  <input type="number" id="m${id}" placeholder="Marks">
+  </div>
+  `;
 
-    5: [
-        ["Digital Signal Processing", 4],
-        ["Communication Systems", 4],
-        ["VLSI Design", 3],
-        ["Embedded Systems", 3],
-        ["Open Elective", 3],
-        ["DSP Lab", 1],
-        ["Mini Project", 2]
-    ]
-};
-
-/***********************
- * SEMESTER CREDITS
- ***********************/
-const semesterCredits = {
-    1: 20,
-    2: 20,
-    3: 18,
-    4: 18,
-    5: 20,
-    6: 18,
-    7: 24,
-    8: 16
-};
-
-/***********************
- * MARKS → GRADE POINT
- ***********************/
-function marksToPoint(m) {
-
-    if (m >= 90) return 10;
-    if (m >= 80) return 9;
-    if (m >= 70) return 8;
-    if (m >= 60) return 7;
-    if (m >= 50) return 6;
-    if (m >= 45) return 5;
-    if (m >= 40) return 4;
-
-    return 0;
 }
+function marksToPoint(m){
 
-/***********************
- * LOAD SUBJECTS
- ***********************/
-function loadSubjects() {
+ if(m>=90) return 10;
+ if(m>=80) return 9;
+ if(m>=70) return 8;
+ if(m>=60) return 7;
+ if(m>=50) return 6;
+ if(m>=45) return 5;
+ if(m>=40) return 4;
 
-    const sem = document.getElementById("semester").value;
+ return 0;
+}
+function calculateSGPA(){
 
-    const box = document.getElementById("subjects");
+ const box = document.getElementById("subjectList");
 
-    box.innerHTML = "";
+ let totalCredits = 0;
+ let totalPoints = 0;
 
-    if (!syllabus[sem]) return;
+ for(let i=0;i<box.children.length;i++){
 
-    syllabus[sem].forEach((sub, i) => {
+  const credit = parseFloat(document.getElementById(`c${i}`).value);
+  const marks = parseFloat(document.getElementById(`m${i}`).value);
 
-        box.innerHTML += `
-        <div class="subject">
-            <b>${sub[0]}</b> (Credits: ${sub[1]})<br>
-            <input type="number" id="m${i}" placeholder="Marks out of 100">
-        </div>
-        `;
-    });
+  if(isNaN(credit) || isNaN(marks)) continue;
+
+  const gp = marksToPoint(marks);
+
+  totalCredits += credit;
+  totalPoints += credit * gp;
+
+ }
+
+ const sgpa = (totalPoints / totalCredits).toFixed(2);
+
+ document.getElementById("sgpaResult").innerText = "SGPA: " + sgpa;
+
 }
 
 /***********************
@@ -264,3 +208,4 @@ function calculateCGPA() {
     document.getElementById("cgpaResult").innerText =
         "CGPA: " + (sum / credits).toFixed(2);
 }
+
