@@ -31,13 +31,15 @@
     <button onclick="openResult()">View Result</button>
     <button class="secondary" onclick="copyUSN()">Copy USN</button>
 
-    <h2>SGPA / CGPA Calculator</h2>
+   <h3>SGPA Calculator</h3>
 
-    <input type="number" id="sgpa" step="0.01" placeholder="Enter SGPA" />
-    <button onclick="saveSGPA()">Save SGPA</button>
+<div id="subjectList"></div>
 
-    <p id="cgpa">CGPA: --</p>
-  </div>
+<button onclick="addSubject()">Add Subject</button>
+
+<button onclick="calculateSGPA()">Calculate SGPA</button>
+
+<h3 id="sgpaResult">SGPA: --</h3>
 
   <script src="app.js"></script>
   <script>
@@ -48,3 +50,4 @@
 
 </body>
 </html>
+
