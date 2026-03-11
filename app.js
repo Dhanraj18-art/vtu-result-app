@@ -2,87 +2,40 @@
  * RESULT URLS
  ***********************/
 const resultUrls = {
-    1: "https://results.vtu.ac.in/DJcbcs24/index.php?usn=",
-    2: "https://results.vtu.ac.in/JJEcbcs24/index.php?usn=",
-    3: "https://results.vtu.ac.in/DJcbcs25/index.php?usn=",
-    4: "https://results.vtu.ac.in/JJEcbcs25/index.php?usn=",
-    5: "https://results.vtu.ac.in/D25J26Ecbcs/index.php?usn="
+  1: "https://results.vtu.ac.in/DJcbcs24/index.php?usn=",
+  2: "https://results.vtu.ac.in/JJEcbcs24/index.php?usn=",
+  3: "https://results.vtu.ac.in/DJcbcs25/index.php?usn=",
+  4: "https://results.vtu.ac.in/JJEcbcs25/index.php?usn=",
+  5: "https://results.vtu.ac.in/D25J26Ecbcs/index.php?usn="
 };
-
-/***********************
- * USER STORAGE
- ***********************/
-let currentUSN = null;
-let sgpaData = {};
-
-function getUsers() {
-    return JSON.parse(localStorage.getItem("vtuUsers")) || {};
-}
-
-function saveUsers(users) {
-    localStorage.setItem("vtuUsers", JSON.stringify(users));
-}
-
-function loadUserData() {
-
-    const usn = document.getElementById("usn").value.trim().toUpperCase();
-
-    if (!usn) return;
-
-    currentUSN = usn;
-
-    const users = getUsers();
-
-    if (!users[currentUSN]) {
-        users[currentUSN] = { sgpaData: {} };
-        saveUsers(users);
-    }
-
-    sgpaData = users[currentUSN].sgpaData;
-
-    document.getElementById("cgpaResult").innerText = "CGPA: --";
-}
-
-/***********************
- * UI CONTROL
- ***********************/
-function openCalculator() {
-
-    document.getElementById("resultSection").style.display = "none";
-
-    document.getElementById("calculatorSection").style.display = "block";
-}
-
-function goBack() {
-
-    document.getElementById("calculatorSection").style.display = "none";
-
-    document.getElementById("resultSection").style.display = "block";
-}
 
 /***********************
  * OPEN RESULT
  ***********************/
 function openResult() {
 
-    const sem = document.getElementById("semester").value;
+  const sem = document.getElementById("semester").value;
+  const usn = document.getElementById("usn").value.trim().toUpperCase();
 
-    const usn = document.getElementById("usn").value.trim().toUpperCase();
+  if (!usn) {
+    alert("Enter USN first");
+    return;
+  }
 
-    if (!usn) {
-        alert("Enter USN first");
-        return;
-    }
+  if (!sem) {
+    alert("Select semester first");
+    return;
+  }
 
-    if (!sem) {
-        alert("Select semester first");
-        return;
-    }
+  const url = resultUrls[sem] + usn;
 
-    const url = resultUrls[sem] + usn;
+  window.open(url, "_blank");
 
-    window.open(url, "_blank");
 }
+
+/***********************
+ * ADD SUBJECT
+ ***********************/
 function addSubject() {
 
   const box = document.getElementById("subjectList");
@@ -91,18 +44,22 @@ function addSubject() {
 
   box.innerHTML += `
   <div class="subject">
-  Subject:
-  <input type="text" id="s${id}" placeholder="Subject Name">
+   Subject:
+   <input type="text" id="s${id}" placeholder="Subject Name">
 
-  Credit:
-  <input type="number" id="c${id}" placeholder="Credits">
+   Credit:
+   <input type="number" id="c${id}" placeholder="Credits">
 
-  Marks:
-  <input type="number" id="m${id}" placeholder="Marks">
+   Marks:
+   <input type="number" id="m${id}" placeholder="Marks">
   </div>
   `;
 
 }
+
+/***********************
+ * MARKS TO GRADE POINT
+ ***********************/
 function marksToPoint(m){
 
  if(m>=90) return 10;
@@ -114,7 +71,12 @@ function marksToPoint(m){
  if(m>=40) return 4;
 
  return 0;
+
 }
+
+/***********************
+ * CALCULATE SGPA
+ ***********************/
 function calculateSGPA(){
 
  const box = document.getElementById("subjectList");
@@ -136,12 +98,77 @@ function calculateSGPA(){
 
  }
 
+ if(totalCredits === 0){
+  alert("Enter subject marks and credits");
+  return;
+ }
+
  const sgpa = (totalPoints / totalCredits).toFixed(2);
 
  document.getElementById("sgpaResult").innerText = "SGPA: " + sgpa;
 
 }
-
+
+/***********************
+ * SAVE SGPA
+ ***********************/
+function saveSGPA(){
+
+ const sem = document.getElementById("semesterInput").value;
+ const sgpa = parseFloat(document.getElementById("sgpaInput").value);
+
+ if(!sem || isNaN(sgpa)){
+  alert("Enter semester and SGPA");
+  return;
+ }
+
+ let data = JSON.parse(localStorage.getItem("cgpaData")) || {};
+
+ data[sem] = sgpa;
+
+ localStorage.setItem("cgpaData", JSON.stringify(data));
+
+ document.getElementById("semesterInput").value="";
+ document.getElementById("sgpaInput").value="";
+
+ displaySemesters();
+
+}
+
+/***********************
+ * DISPLAY SAVED SEMESTERS
+ ***********************/
+function displaySemesters(){
+
+ const data = JSON.parse(localStorage.getItem("cgpaData")) || {};
+
+ const box = document.getElementById("semesterList");
+
+ box.innerHTML = "";
+
+ const names = [
+ "",
+ "1st Sem",
+ "2nd Sem",
+ "3rd Sem",
+ "4th Sem",
+ "5th Sem",
+ "6th Sem",
+ "7th Sem",
+ "8th Sem"
+ ];
+
+ for(let sem in data){
+
+  box.innerHTML += `
+  <div class="semesterItem">
+   ${names[sem]} = ${data[sem]}
+  </div>
+  `;
+
+ }
+
+}
 
 /***********************
  * CALCULATE CGPA
@@ -171,41 +198,12 @@ function calculateCGPA(){
  "CGPA: " + cgpa;
 
 }
-function saveSGPA(){
 
- const sem = document.getElementById("semesterInput").value;
- const sgpa = parseFloat(document.getElementById("sgpaInput").value);
-
- if(!sem || isNaN(sgpa)){
-  alert("Enter semester and SGPA");
-  return;
- }
-
- let data = JSON.parse(localStorage.getItem("cgpaData")) || {};
-
- data[sem] = sgpa;
-
- localStorage.setItem("cgpaData", JSON.stringify(data));
+/***********************
+ * LOAD SAVED DATA
+ ***********************/
+window.onload = function(){
 
  displaySemesters();
-
-}
-function displaySemesters(){
-
- const data = JSON.parse(localStorage.getItem("cgpaData")) || {};
-
- const box = document.getElementById("semesterList");
-
- box.innerHTML = "";
-
- for(let sem in data){
-
-  box.innerHTML += `
-  <div>
-   ${sem} Semester = ${data[sem]}
-  </div>
-  `;
-
- }
 
 }
