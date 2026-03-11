@@ -227,7 +227,25 @@ function saveSGPA(){
 
  localStorage.setItem("cgpaData", JSON.stringify(data));
 
- document.getElementById("saveMessage").innerText =
- "Semester " + sem + " SGPA saved";
+ displaySemesters();
+
+}
+function displaySemesters(){
+
+ const data = JSON.parse(localStorage.getItem("cgpaData")) || {};
+
+ const box = document.getElementById("semesterList");
+
+ box.innerHTML = "";
+
+ for(let sem in data){
+
+  box.innerHTML += `
+  <div>
+   ${sem} Semester = ${data[sem]}
+  </div>
+  `;
+
+ }
 
 }
