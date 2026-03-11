@@ -186,26 +186,48 @@ function saveSGPA() {
 /***********************
  * CALCULATE CGPA
  ***********************/
-function calculateCGPA() {
+function calculateCGPA(){
 
-    let sum = 0;
-    let credits = 0;
+ const data = JSON.parse(localStorage.getItem("cgpaData")) || {};
 
-    for (let s in sgpaData) {
+ let total = 0;
+ let count = 0;
 
-        sum += sgpaData[s] * semesterCredits[s];
+ for(let sem in data){
 
-        credits += semesterCredits[s];
-    }
+  total += data[sem];
+  count++;
 
-    if (credits === 0) {
+ }
 
-        alert("No SGPA saved yet");
+ if(count === 0){
+  alert("No SGPA saved yet");
+  return;
+ }
 
-        return;
-    }
+ const cgpa = (total / count).toFixed(2);
 
-    document.getElementById("cgpaResult").innerText =
-        "CGPA: " + (sum / credits).toFixed(2);
+ document.getElementById("cgpaResult").innerText =
+ "CGPA: " + cgpa;
+
 }
+function saveSGPA(){
 
+ const sem = document.getElementById("semesterInput").value;
+ const sgpa = parseFloat(document.getElementById("sgpaInput").value);
+
+ if(!sem || isNaN(sgpa)){
+  alert("Enter semester and SGPA");
+  return;
+ }
+
+ let data = JSON.parse(localStorage.getItem("cgpaData")) || {};
+
+ data[sem] = sgpa;
+
+ localStorage.setItem("cgpaData", JSON.stringify(data));
+
+ document.getElementById("saveMessage").innerText =
+ "Semester " + sem + " SGPA saved";
+
+}
