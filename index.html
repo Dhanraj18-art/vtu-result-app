@@ -1,37 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VTU Results App</title>
 
-  <link rel="stylesheet" href="style.css" />
-  <link rel="manifest" href="manifest.json" />
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>VTU Results App</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+
 </head>
+
 <body>
 
-  <div class="container">
-    <h1>VTU Results</h1>
+<div class="container">
 
-    <input
-      type="text"
-      id="usn"
-      placeholder="Enter USN (e.g. 1BH23EC001)"
-    />
+<h1>VTU Results</h1>
 
-    <select id="semester">
-      <option value="">Select Semester</option>
-      <option value="1">Semester 1</option>
-      <option value="2">Semester 2</option>
-      <option value="3">Semester 3</option>
-      <option value="4">Semester 4</option>
-      <option value="5">Semester 5</option>
-    </select>
+<input
+type="text"
+id="usn"
+placeholder="Enter USN (e.g. 1BH23EC001)"
+>
 
-    <button onclick="openResult()">View Result</button>
-    <button class="secondary" onclick="copyUSN()">Copy USN</button>
+<select id="semester">
 
-   <h3>SGPA Calculator</h3>
+<option value="">Select Semester</option>
+
+<option value="1">Semester 1</option>
+<option value="2">Semester 2</option>
+<option value="3">Semester 3</option>
+<option value="4">Semester 4</option>
+<option value="5">Semester 5</option>
+
+</select>
+
+<button onclick="openResult()">View Result</button>
+
+<button class="secondary" onclick="copyUSN()">Copy USN</button>
+
+<hr>
+
+<h2>SGPA Calculator</h2>
 
 <div id="subjectList"></div>
 
@@ -39,29 +51,40 @@
 
 <button onclick="calculateSGPA()">Calculate SGPA</button>
 
-<h3>Save Semester SGPA</h3>
+<h3 id="sgpaResult">SGPA: --</h3>
+
+<hr>
+
+<h2>Save Semester SGPA</h2>
 
 <input type="number" id="semesterInput" placeholder="Semester Number">
-<input type="number" id="sgpaInput" placeholder="Enter SGPA">
+
+<input type="number" step="0.01" id="sgpaInput" placeholder="Enter SGPA">
 
 <button onclick="saveSGPA()">Save SGPA</button>
 
 <hr>
 
-<h3>Saved SGPA</h3>
+<h2>Saved Semesters</h2>
+
 <div id="semesterList"></div>
+
+<hr>
 
 <button onclick="calculateCGPA()">Calculate CGPA</button>
 
-<h3 id="cgpaResult">CGPA: --</h3>
+<h2 id="cgpaResult">CGPA: --</h2>
 
-  <script src="app.js"></script>
-  <script>
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("service-worker.js");
-    }
-  </script>
+</div>
+
+<script src="app.js"></script>
+
+<script>
+if ("serviceWorker" in navigator) {
+ navigator.serviceWorker.register("service-worker.js");
+}
+</script>
 
 </body>
-</html>
 
+</html>
