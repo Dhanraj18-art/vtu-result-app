@@ -1,4 +1,4 @@
-const CACHE_NAME = "vtu-result-cache-v1";
+const CACHE_NAME = "vtu-result-cache-v2";
 
 const urlsToCache = [
     "/",
