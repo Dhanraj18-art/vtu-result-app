@@ -141,47 +141,7 @@ function calculateSGPA(){
  document.getElementById("sgpaResult").innerText = "SGPA: " + sgpa;
 
 }
-
-/***********************
- * SAVE SGPA
- ***********************/
-function saveSGPA() {
-
-    if (!currentUSN) {
-        alert("Enter USN first");
-        return;
-    }
-
-    const sem = document.getElementById("semester").value;
-
-    let totalCredits = 0;
-    let totalPoints = 0;
-
-    syllabus[sem].forEach((sub, i) => {
-
-        const marks = parseFloat(document.getElementById(`m${i}`).value);
-
-        if (isNaN(marks)) return;
-
-        const gp = marksToPoint(marks);
-
-        totalCredits += sub[1];
-
-        totalPoints += sub[1] * gp;
-    });
-
-    const sgpa = (totalPoints / totalCredits).toFixed(2);
-
-    document.getElementById("sgpaResult").innerText = "SGPA: " + sgpa;
-
-    const users = getUsers();
-
-    users[currentUSN].sgpaData[sem] = parseFloat(sgpa);
-
-    saveUsers(users);
-
-    sgpaData = users[currentUSN].sgpaData;
-}
+
 
 /***********************
  * CALCULATE CGPA
